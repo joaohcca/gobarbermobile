@@ -16,6 +16,7 @@ import * as Yup from 'yup';
 import { Form } from "@unform/mobile";
 import { FormHandles} from "@unform/core";
 
+import { useAuth } from '../../hooks/auth';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import getValidationErrors from '../../utils/getValidationErros';
@@ -33,6 +34,7 @@ const SignIn: React.FC = () => {
     const formRef = useRef<FormHandles>(null)
     const passwordInputRef = useRef<TextInput>(null)
     const navigation = useNavigation();
+    const { signIn } = useAuth();
 
     const handleSignIn = useCallback(
         // eslint-disable-next-line @typescript-eslint/ban-types
@@ -51,10 +53,10 @@ const SignIn: React.FC = () => {
               abortEarly: false,
             });
 
-            // await signIn({
-            //   email: data.email,
-            //   password: data.password,
-            // });
+            await signIn({
+              email: data.email,
+              password: data.password,
+            });
             Alert.alert('Bem-vindo(a)','last login @@')
 
           } catch (err) {
@@ -66,8 +68,7 @@ const SignIn: React.FC = () => {
               return;
             }
           }
-        },
-        [],
+        },[signIn],
       );
     return (
         <>
